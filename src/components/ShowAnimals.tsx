@@ -1,10 +1,27 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { IAnimal } from "../models/IAnimal";
+import { IAnimalIsFEd } from "../models/IAnimalFed";
+import { IsFedButton } from "./IsFedButton";
+import { StyledButton } from "./StyledComponents.tsx/Buttons";
+import { StyledHeading } from "./StyledComponents.tsx/Headings";
+import { StyledImage } from "./StyledComponents.tsx/Images";
+import { StyledParagraph } from "./StyledComponents.tsx/Paragraphs";
+import {
+  AnimalWrapper,
+  HeroWrapper,
+  ImageWrapper,
+} from "./StyledComponents.tsx/Wrappers";
 
-export const ShowAnimals = () => {
+interface IShowAnimalsProps {
+  animalIsFed: IAnimalIsFEd;
+}
+
+export const ShowAnimals = (props: IShowAnimalsProps) => {
   const [animals, setAnimals] = useState<IAnimal[]>([]);
-  // const [animalFed, setAnimalFed] = useState(false);
+  const [animalHasBeenFed, setAnimalHasBeenFed] = useState<IAnimal>({
+    isFed: false,
+  });
 
   const LOCAL_STORAGE_LIST_KEY = "animals";
 
@@ -25,28 +42,41 @@ export const ShowAnimals = () => {
       });
   });
 
-  // const handleAnimalFed = () => {
+  const handleAnimalFed = () => {
+    if (animalHasBeenFed === true) {
+    }
+  };
+
+  // const handleAnimalFed = (animalIsFed: IAnimal[]) => {
   //   if (animalFed){
 
   //   }
 
-  //   saveToLocalStorage()
+  //   saveToLocalStorage(animalIsFed)
   // }
 
   return (
     <>
       {animals.map((animal) => {
         return (
-          <div key={animal.id}>
-            <Link to={"/animal/" + animal.id}>
-              <h3>{animal.name}</h3>
-              <p></p>
-              <div>
-                <img src={animal.imageUrl} alt={animal.name}></img>
-              </div>
-            </Link>
-            {/* <button onClick={handleAnimalFed}>Mata djur</button> */}
-          </div>
+          <HeroWrapper>
+            <AnimalWrapper key={animal.id}>
+              <Link to={"/animal/" + animal.id}>
+                <StyledHeading>{animal.name}</StyledHeading>
+                <StyledParagraph
+                  animalFedButtonClicked={props.animalIsFed.isFedClicked}
+                ></StyledParagraph>
+                <ImageWrapper>
+                  <StyledImage
+                    src={animal.imageUrl}
+                    alt={animal.name}
+                  ></StyledImage>
+                </ImageWrapper>
+              </Link>
+              <IsFedButton animalFed={handleAnimalFed}></IsFedButton>
+              {/* <button onClick={handleAnimalFed}>Mata djur</button> */}
+            </AnimalWrapper>
+          </HeroWrapper>
         );
       })}
     </>
