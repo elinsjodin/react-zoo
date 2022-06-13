@@ -1,21 +1,19 @@
 import { useState } from "react";
 import { IAnimal } from "../models/IAnimal";
+import { IAnimalFed } from "../models/IAnimalFed";
 import { StyledButton } from "./StyledComponents.tsx/Buttons";
 
 interface IShowAnimalProps {
-  animalFed(value: boolean): void;
+  animal: IAnimal;
+  animalFed(id: number): void;
 }
 
 export const IsFedButton = (props: IShowAnimalProps) => {
-  const [animalHasBeenFed, setAnimalHasBeenFed] = useState(false);
-
-  const handleAnimalFed = () => {
-    props.animalFed(animalHasBeenFed);
-  };
-
   return (
     <>
-      <StyledButton onClick={handleAnimalFed}>Mata djur</StyledButton>
+      <StyledButton onClick={() => props.animalFed(props.animal.id)}>
+        Mata djur
+      </StyledButton>
     </>
   );
 };

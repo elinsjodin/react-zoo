@@ -4,6 +4,8 @@ import { ShowAnimals } from "./components/ShowAnimals";
 import { Layout } from "./components/Layout";
 import { Animal } from "./components/Animal";
 import { NotFound } from "./components/NotFound";
+import { useState } from "react";
+import { IAnimal } from "./models/IAnimal";
 
 function App() {
   return (

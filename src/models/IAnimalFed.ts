@@ -1,6 +1,6 @@
 import { IAnimal } from "./IAnimal";
 
-export interface IAnimalIsFEd {
+export interface IAnimalFed {
   animal?: IAnimal;
   isFedClicked: boolean;
 }
