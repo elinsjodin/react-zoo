@@ -5,7 +5,15 @@ import { AnimalListContext, animals } from "../contexts/AnimalListContext";
 import { IAnimal } from "../models/IAnimal";
 import { TimeService } from "../models/TimeService";
 import { IsFedButton } from "./IsFedButton";
+import { StyledHeading } from "./StyledComponents.tsx/Headings";
+import { StyledImage } from "./StyledComponents.tsx/Images";
 import { StyledParagraph } from "./StyledComponents.tsx/Paragraphs";
+import {
+  AnimalFedWrapper,
+  SingleAnimalDescriptionWrapper,
+  SingleAnimalImageWrapper,
+  SingleWrapper,
+} from "./StyledComponents.tsx/Wrappers";
 
 export const Animal = () => {
   let animalList = useContext(AnimalListContext);
@@ -65,29 +73,37 @@ export const Animal = () => {
 
   return (
     <>
-      <Link to="/">Back to Home Page</Link>
-      <h3>
-        {animal.name} ({animal.latinName})
-      </h3>
-      <div>
-        <img
-          width="600px"
-          src={animal.imageUrl}
-          alt={animal.name}
-          onError={(e) => {
-            e.currentTarget.src = fallbackImg;
-          }}
-        />
-      </div>
-      <div>Decription: {animal.longDescription}</div>
-      {TimeService(animal, 3) ? <p>Detta djur behöver matas</p> : null}
-      {animal.isFed ? null : (
-        <IsFedButton animalFed={handleAnimalFed} animal={animal}></IsFedButton>
-      )}
-      <StyledParagraph animalFedButtonClicked={animal.isFed}>
-        Matad: {animal.isFed.toString()}
-      </StyledParagraph>
-      <p>{animal.lastFed.toString()}</p>
+      <SingleWrapper>
+        <Link to="/">Back to Home Page</Link>
+        <StyledHeading>
+          {animal.name} ({animal.latinName})
+        </StyledHeading>
+        <SingleAnimalImageWrapper>
+          <StyledImage
+            src={animal.imageUrl}
+            alt={animal.name}
+            onError={(e) => {
+              e.currentTarget.src = fallbackImg;
+            }}
+          />
+        </SingleAnimalImageWrapper>
+        <SingleAnimalDescriptionWrapper>
+          Decription: {animal.longDescription}
+        </SingleAnimalDescriptionWrapper>
+        <AnimalFedWrapper>
+          {TimeService(animal, 3) ? <p>Detta djur behöver matas</p> : null}
+          {animal.isFed ? null : (
+            <IsFedButton
+              animalFed={handleAnimalFed}
+              animal={animal}
+            ></IsFedButton>
+          )}
+          <StyledParagraph animalFedButtonClicked={animal.isFed}>
+            Matad: {animal.isFed.toString()}
+          </StyledParagraph>
+          <p>{animal.lastFed.toString()}</p>
+        </AnimalFedWrapper>
+      </SingleWrapper>
     </>
   );
 };

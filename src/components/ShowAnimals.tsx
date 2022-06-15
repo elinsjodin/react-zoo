@@ -62,33 +62,31 @@ export const ShowAnimals = () => {
   }, []);
 
   return (
-    <>
+    <HeroWrapper>
       {animalList.animals.map((animal) => {
         return (
-          <HeroWrapper key={animal.id}>
-            <AnimalWrapper>
-              <Link to={"/animal/" + animal.id}>
-                <StyledHeading>
-                  {animal.name}{" "}
-                  {TimeService(animal, 4) ? (
-                    <p>(Detta djur behöver matas)</p>
-                  ) : null}
-                </StyledHeading>
-                <ImageWrapper>
-                  <StyledImage
-                    src={animal.imageUrl}
-                    alt={animal.name}
-                    onError={(e) => {
-                      e.currentTarget.src = fallbackImg;
-                    }}
-                  ></StyledImage>
-                </ImageWrapper>
-              </Link>
-              <p>{animal.shortDescription}</p>
-            </AnimalWrapper>
-          </HeroWrapper>
+          <AnimalWrapper key={animal.id}>
+            <Link to={"/animal/" + animal.id}>
+              <StyledHeading>
+                {animal.name}{" "}
+                {TimeService(animal, 4) ? (
+                  <p>(Detta djur behöver matas)</p>
+                ) : null}
+              </StyledHeading>
+              <ImageWrapper>
+                <StyledImage
+                  src={animal.imageUrl}
+                  alt={animal.name}
+                  onError={(e) => {
+                    e.currentTarget.src = fallbackImg;
+                  }}
+                ></StyledImage>
+              </ImageWrapper>
+            </Link>
+            <p>{animal.shortDescription}</p>
+          </AnimalWrapper>
         );
       })}
-    </>
+    </HeroWrapper>
   );
 };

@@ -6,7 +6,7 @@ interface IAnimalParagraphProps {
 
 export const StyledParagraph = styled.p`
   background-color: ${(props: IAnimalParagraphProps) =>
-    props.animalFedButtonClicked ? "green" : "yellow"};
+    props.animalFedButtonClicked ? "#c0d6bf" : "palevioletred"};
   width: 10%;
   text-align: center;
   padding: 0.3rem;
