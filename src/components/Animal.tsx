@@ -78,6 +78,9 @@ export const Animal = () => {
         <StyledHeading>
           {animal.name} ({animal.latinName})
         </StyledHeading>
+        {TimeService(animal, 3) ? (
+          <a href="#feed-animal">Detta djur behöver matas!</a>
+        ) : null}
         <SingleAnimalImageWrapper>
           <StyledImage
             src={animal.imageUrl}
@@ -90,8 +93,7 @@ export const Animal = () => {
         <SingleAnimalDescriptionWrapper>
           Decription: {animal.longDescription}
         </SingleAnimalDescriptionWrapper>
-        <AnimalFedWrapper>
-          {TimeService(animal, 3) ? <p>Detta djur behöver matas</p> : null}
+        <AnimalFedWrapper id="feed-animal">
           {animal.isFed ? null : (
             <IsFedButton
               animalFed={handleAnimalFed}
@@ -101,7 +103,7 @@ export const Animal = () => {
           <StyledParagraph animalFedButtonClicked={animal.isFed}>
             Matad: {animal.isFed.toString()}
           </StyledParagraph>
-          <p>{animal.lastFed.toString()}</p>
+          {animal.isFed ? <p>{animal.lastFed.toString()}</p> : null}
         </AnimalFedWrapper>
       </SingleWrapper>
     </>
