@@ -6,6 +6,8 @@ import { IAnimal } from "../models/IAnimal";
 import { TimeService } from "../models/TimeService";
 import { StyledHeading } from "./StyledComponents.tsx/Headings";
 import { StyledImage } from "./StyledComponents.tsx/Images";
+import { StyledLink } from "./StyledComponents.tsx/Link";
+import { StyledDescriptionParagraph } from "./StyledComponents.tsx/Paragraphs";
 import {
   AnimalWrapper,
   HeroWrapper,
@@ -66,11 +68,11 @@ export const ShowAnimals = () => {
       {animalList.animals.map((animal) => {
         return (
           <AnimalWrapper key={animal.id}>
-            <Link to={"/animal/" + animal.id}>
+            <StyledLink to={"/animal/" + animal.id}>
               <StyledHeading>
                 {animal.name}{" "}
                 {TimeService(animal, 4) ? (
-                  <p>(Detta djur behöver matas)</p>
+                  <p>(Detta djur behöver matas!)</p>
                 ) : null}
               </StyledHeading>
               <ImageWrapper>
@@ -82,8 +84,10 @@ export const ShowAnimals = () => {
                   }}
                 ></StyledImage>
               </ImageWrapper>
-            </Link>
-            <p>{animal.shortDescription}</p>
+            </StyledLink>
+            <StyledDescriptionParagraph>
+              {animal.shortDescription}
+            </StyledDescriptionParagraph>
           </AnimalWrapper>
         );
       })}

@@ -11,3 +11,8 @@ export const StyledParagraph = styled.p`
   text-align: center;
   padding: 0.3rem;
 `;
+
+export const StyledDescriptionParagraph = styled.p`
+  width: 90%;
+  text-align: center;
+`;

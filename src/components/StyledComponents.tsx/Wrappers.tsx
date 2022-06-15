@@ -15,6 +15,10 @@ export const SingleWrapper = styled.div`
 
 export const AnimalWrapper = styled.div`
   width: 45%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const ImageWrapper = styled.div`

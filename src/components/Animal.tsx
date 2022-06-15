@@ -1,12 +1,14 @@
 import { useContext, useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import fallbackImg from "../assets/fallbackImg.png";
 import { AnimalListContext, animals } from "../contexts/AnimalListContext";
 import { IAnimal } from "../models/IAnimal";
 import { TimeService } from "../models/TimeService";
 import { IsFedButton } from "./IsFedButton";
+import { StyledAnchor } from "./StyledComponents.tsx/Anchor";
 import { StyledHeading } from "./StyledComponents.tsx/Headings";
 import { StyledImage } from "./StyledComponents.tsx/Images";
+import { StyledHomeLink } from "./StyledComponents.tsx/Link";
 import { StyledParagraph } from "./StyledComponents.tsx/Paragraphs";
 import {
   AnimalFedWrapper,
@@ -74,12 +76,14 @@ export const Animal = () => {
   return (
     <>
       <SingleWrapper>
-        <Link to="/">Back to Home Page</Link>
+        <StyledHomeLink to="/">Back to Home Page</StyledHomeLink>
         <StyledHeading>
           {animal.name} ({animal.latinName})
         </StyledHeading>
         {TimeService(animal, 3) ? (
-          <a href="#feed-animal">Detta djur behöver matas!</a>
+          <StyledAnchor href="#feed-animal">
+            Detta djur behöver matas!
+          </StyledAnchor>
         ) : null}
         <SingleAnimalImageWrapper>
           <StyledImage
@@ -103,7 +107,7 @@ export const Animal = () => {
           <StyledParagraph animalFedButtonClicked={animal.isFed}>
             Matad: {animal.isFed.toString()}
           </StyledParagraph>
-          {animal.isFed ? <p>{animal.lastFed.toString()}</p> : null}
+          {animal.isFed ? <p>{animal.lastFed.toLocaleString()}</p> : null}
         </AnimalFedWrapper>
       </SingleWrapper>
     </>
