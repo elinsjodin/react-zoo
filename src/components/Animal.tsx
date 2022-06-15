@@ -14,6 +14,7 @@ import {
   AnimalFedWrapper,
   SingleAnimalDescriptionWrapper,
   SingleAnimalImageWrapper,
+  SingleAnimalWrapper,
   SingleWrapper,
 } from "./StyledComponents.tsx/Wrappers";
 
@@ -77,38 +78,43 @@ export const Animal = () => {
     <>
       <SingleWrapper>
         <StyledHomeLink to="/">Back to Home Page</StyledHomeLink>
-        <StyledHeading>
-          {animal.name} ({animal.latinName})
-        </StyledHeading>
-        {TimeService(animal, 3) ? (
-          <StyledAnchor href="#feed-animal">
-            Detta djur behöver matas!
-          </StyledAnchor>
-        ) : null}
-        <SingleAnimalImageWrapper>
-          <StyledImage
-            src={animal.imageUrl}
-            alt={animal.name}
-            onError={(e) => {
-              e.currentTarget.src = fallbackImg;
-            }}
-          />
-        </SingleAnimalImageWrapper>
-        <SingleAnimalDescriptionWrapper>
-          Decription: {animal.longDescription}
-        </SingleAnimalDescriptionWrapper>
-        <AnimalFedWrapper id="feed-animal">
-          {animal.isFed ? null : (
-            <IsFedButton
-              animalFed={handleAnimalFed}
-              animal={animal}
-            ></IsFedButton>
-          )}
-          <StyledParagraph animalFedButtonClicked={animal.isFed}>
-            Matad: {animal.isFed.toString()}
-          </StyledParagraph>
-          {animal.isFed ? <p>{animal.lastFed.toLocaleString()}</p> : null}
-        </AnimalFedWrapper>
+        <SingleAnimalWrapper>
+          <StyledHeading>
+            {animal.name} ({animal.latinName}){" "}
+            <p>
+              {TimeService(animal, 3) ? (
+                <StyledAnchor href="#feed-animal">
+                  Detta djur behöver matas!
+                </StyledAnchor>
+              ) : null}
+            </p>
+          </StyledHeading>
+          <SingleAnimalImageWrapper>
+            <StyledImage
+              src={animal.imageUrl}
+              alt={animal.name}
+              onError={(e) => {
+                e.currentTarget.src = fallbackImg;
+              }}
+            />
+          </SingleAnimalImageWrapper>
+          <SingleAnimalDescriptionWrapper>
+            Decription: {animal.longDescription}
+          </SingleAnimalDescriptionWrapper>
+          <AnimalFedWrapper id="feed-animal">
+            {animal.isFed ? null : (
+              <IsFedButton
+                animalFed={handleAnimalFed}
+                animal={animal}
+              ></IsFedButton>
+            )}
+            <StyledParagraph animalFedButtonClicked={animal.isFed}>
+              {animal.isFed
+                ? "Matad:" + " " + animal.lastFed.toLocaleString()
+                : "Hungrig"}
+            </StyledParagraph>
+          </AnimalFedWrapper>
+        </SingleAnimalWrapper>
       </SingleWrapper>
     </>
   );

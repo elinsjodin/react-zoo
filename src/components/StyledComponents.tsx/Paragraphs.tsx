@@ -12,6 +12,10 @@ export const StyledParagraph = styled.p`
   padding: 0.3rem;
 `;
 
+export const StyledAlertParagraph = styled.p`
+  color: black;
+`;
+
 export const StyledDescriptionParagraph = styled.p`
   width: 90%;
   text-align: center;

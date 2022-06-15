@@ -21,6 +21,8 @@ export const AnimalWrapper = styled.div`
   justify-content: center;
 `;
 
+export const SingleAnimalWrapper = styled.div``;
+
 export const ImageWrapper = styled.div`
   margin: 0 auto;
   display: flex;

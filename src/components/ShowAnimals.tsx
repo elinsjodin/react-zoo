@@ -7,7 +7,10 @@ import { TimeService } from "../models/TimeService";
 import { StyledHeading } from "./StyledComponents.tsx/Headings";
 import { StyledImage } from "./StyledComponents.tsx/Images";
 import { StyledLink } from "./StyledComponents.tsx/Link";
-import { StyledDescriptionParagraph } from "./StyledComponents.tsx/Paragraphs";
+import {
+  StyledAlertParagraph,
+  StyledDescriptionParagraph,
+} from "./StyledComponents.tsx/Paragraphs";
 import {
   AnimalWrapper,
   HeroWrapper,
@@ -72,7 +75,9 @@ export const ShowAnimals = () => {
               <StyledHeading>
                 {animal.name}{" "}
                 {TimeService(animal, 4) ? (
-                  <p>(Detta djur behöver matas!)</p>
+                  <StyledAlertParagraph>
+                    (Detta djur behöver matas!)
+                  </StyledAlertParagraph>
                 ) : null}
               </StyledHeading>
               <ImageWrapper>
