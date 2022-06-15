@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import fallbackImg from "../assets/fallbackImg.png";
+import { AnimalListContext } from "../contexts/AnimalListContext";
 import { IAnimal } from "../models/IAnimal";
+import { TimeService } from "../models/TimeService";
 import { StyledHeading } from "./StyledComponents.tsx/Headings";
 import { StyledImage } from "./StyledComponents.tsx/Images";
 import {
@@ -11,7 +13,7 @@ import {
 } from "./StyledComponents.tsx/Wrappers";
 
 export const ShowAnimals = () => {
-  const [animals, setAnimals] = useState<IAnimal[]>([]);
+  let animalList = useContext(AnimalListContext);
 
   const LOCAL_STORAGE_LIST_KEY = "animals";
 
@@ -22,24 +24,56 @@ export const ShowAnimals = () => {
   };
 
   useEffect(() => {
-    if (animals.length !== 0) return;
+    if (animalList.animals.length !== 0) return;
 
-    fetch("https://animals.azurewebsites.net/api/animals")
-      .then((response) => response.json())
-      .then((animalData) => {
-        saveToLocalStorage(animalData);
-        setAnimals(animalData);
-      });
-  });
+    const animalArrayInLocalStorage = localStorage.getItem(
+      LOCAL_STORAGE_LIST_KEY
+    );
+
+    if (animalArrayInLocalStorage) {
+      animalList.feedAnimal(
+        JSON.parse(localStorage.getItem(LOCAL_STORAGE_LIST_KEY) || "[]")
+      );
+    } else {
+      fetch("https://animals.azurewebsites.net/api/animals")
+        .then((response) => response.json())
+        .then((animalData: IAnimal[]) => {
+          saveToLocalStorage(animalData);
+          animalList.feedAnimal(animalData);
+        });
+    }
+  }, []);
+
+  useEffect(() => {
+    const animalArray: IAnimal[] = [...animalList.animals];
+
+    for (let i = 0; i < animalArray.length; i++) {
+      const currentAnimal = animalArray[i];
+
+      if (TimeService(currentAnimal, 4)) {
+        currentAnimal.isFed = false;
+      }
+    }
+
+    localStorage.setItem(LOCAL_STORAGE_LIST_KEY, JSON.stringify(animalArray));
+    console.log([...animalArray]);
+
+    animalList.feedAnimal([...animalArray]);
+  }, []);
 
   return (
     <>
-      {animals.map((animal) => {
+      {animalList.animals.map((animal) => {
         return (
           <HeroWrapper key={animal.id}>
             <AnimalWrapper>
               <Link to={"/animal/" + animal.id}>
-                <StyledHeading>{animal.name}</StyledHeading>
+                <StyledHeading>
+                  {animal.name}{" "}
+                  {TimeService(animal, 4) ? (
+                    <p>(Detta djur behöver matas)</p>
+                  ) : null}
+                </StyledHeading>
                 <ImageWrapper>
                   <StyledImage
                     src={animal.imageUrl}
@@ -50,7 +84,7 @@ export const ShowAnimals = () => {
                   ></StyledImage>
                 </ImageWrapper>
               </Link>
-              {animal.shortDescription}
+              <p>{animal.shortDescription}</p>
             </AnimalWrapper>
           </HeroWrapper>
         );

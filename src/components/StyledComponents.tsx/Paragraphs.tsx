@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { IAnimalFed } from "../../models/IAnimalFed";
 
 interface IAnimalParagraphProps {
   animalFedButtonClicked: boolean;

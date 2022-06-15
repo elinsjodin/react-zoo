@@ -1,11 +1,15 @@
-import { useEffect, useState, SyntheticEvent } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import fallbackImg from "../assets/fallbackImg.png";
+import { AnimalListContext, animals } from "../contexts/AnimalListContext";
 import { IAnimal } from "../models/IAnimal";
+import { TimeService } from "../models/TimeService";
 import { IsFedButton } from "./IsFedButton";
 import { StyledParagraph } from "./StyledComponents.tsx/Paragraphs";
 
 export const Animal = () => {
+  let animalList = useContext(AnimalListContext);
+
   const [animal, setAnimal] = useState<IAnimal>({
     id: 0,
     imageUrl: "",
@@ -19,63 +23,45 @@ export const Animal = () => {
     yearOfBirth: 0,
   });
 
-  const [animalHasBeenFed, setAnimalHasBeenFed] = useState(false);
-  const [paragraphColor, setParagraphColor] = useState("");
-
-  let params = useParams();
-
-  const LOCAL_STORAGE_LIST_KEY = "animalArray";
-
-  const getAnimalArrayFromLocalStorage: IAnimal[] = JSON.parse(
-    localStorage.getItem(LOCAL_STORAGE_LIST_KEY) || "[]"
-  );
-
-  const saveToLocalStorage = (animalArray: IAnimal[]) => {
-    localStorage.setItem(LOCAL_STORAGE_LIST_KEY, JSON.stringify(animalArray));
-  };
+  const { id } = useParams<{ id: string }>();
 
   useEffect(() => {
-    fetch("https://animals.azurewebsites.net/api/animals/" + params.id)
-      .then((response) => response.json())
-      .then((singleAnimalData) => {
-        saveToLocalStorage(singleAnimalData);
-        setAnimal(singleAnimalData);
-      });
-  }, []);
+    if (animal.id !== 0) return;
+
+    const animalArray: IAnimal[] = [...animalList.animals];
+
+    for (let i = 0; i < animalArray.length; i++) {
+      const currentAnimal = animalArray[i];
+
+      if (id) {
+        if (currentAnimal.id === +id) {
+          setAnimal({ ...currentAnimal });
+        }
+      }
+      if (TimeService(currentAnimal, 3)) {
+        currentAnimal.isFed = false;
+      }
+    }
+    localStorage.setItem("animals", JSON.stringify(animalArray));
+  });
 
   const handleAnimalFed = () => {
-    const animalArray: IAnimal[] = getAnimalArrayFromLocalStorage;
+    const animalArray: IAnimal[] = [...animalList.animals];
 
-    // for (let i = 0; i < animalArray.length; i++) {
-    //   const animal = animalArray[i];
-    //   if (animal.id === +params) {
-    //     animal.isFed = true;
-    //     animal.lastFed = new Date();
-    //     saveToLocalStorage(animalArray);
-    //     setAnimal(animal);
-    //     setAnimalHasBeenFed(true);
-    //     setParagraphColor("green");
-    //   } else {
-    //     setParagraphColor("yellow");
-    //   }
-    // }
+    for (let i = 0; i < animalArray.length; i++) {
+      const currentAnimal = animalArray[i];
 
-    // for (let i = 0; i < animalArray.length; i++) {
-    //   if (animalArray[i].id === params.id) {
-    //     animalArray[i].isFed = true;
-    //     animalArray[i].lastFed = new Date();
-    //     saveToLocalStorage(animalArray);
-    //     setAnimal(animalArray[i]);
-    //     setAnimalHasBeenFed(true);
-    //     setParagraphColor("green");
-    //   } else {
-    //     setParagraphColor("yellow");
-    //   }
-    // }
-    console.log(animalHasBeenFed);
+      if (id) {
+        if (currentAnimal.id === +id) {
+          currentAnimal.isFed = true;
+          currentAnimal.lastFed = new Date();
+          localStorage.setItem("animals", JSON.stringify(animals));
+          setAnimal({ ...currentAnimal });
+          animalList.feedAnimal(animalArray);
+        }
+      }
+    }
   };
-
-  console.log(animal);
 
   return (
     <>
@@ -94,10 +80,14 @@ export const Animal = () => {
         />
       </div>
       <div>Decription: {animal.longDescription}</div>
-      <IsFedButton animalFed={handleAnimalFed} animal={animal}></IsFedButton>
-      <StyledParagraph animalFedButtonClicked={animalHasBeenFed}>
-        Fed
+      {TimeService(animal, 3) ? <p>Detta djur behöver matas</p> : null}
+      {animal.isFed ? null : (
+        <IsFedButton animalFed={handleAnimalFed} animal={animal}></IsFedButton>
+      )}
+      <StyledParagraph animalFedButtonClicked={animal.isFed}>
+        Matad: {animal.isFed.toString()}
       </StyledParagraph>
+      <p>{animal.lastFed.toString()}</p>
     </>
   );
 };
