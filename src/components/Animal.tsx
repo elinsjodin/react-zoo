@@ -82,7 +82,7 @@ export const Animal = () => {
           <StyledHeading>
             {animal.name} ({animal.latinName}){" "}
             <p>
-              {TimeService(animal, 3) ? (
+              {TimeService(animal, 4) ? (
                 <StyledAnchor href="#feed-animal">
                   Detta djur behöver matas!
                 </StyledAnchor>
