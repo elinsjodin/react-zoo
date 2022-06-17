@@ -5,5 +5,10 @@ export const StyledButton = styled.button`
   background-color: #c0d6bf;
   color: black;
   padding: 0.5rem;
+  margin-top: 10px;
   cursor: pointer;
+
+  &:hover {
+    background-color: #a4bea3;
+  }
 `;

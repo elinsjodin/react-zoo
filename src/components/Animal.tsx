@@ -12,6 +12,7 @@ import { StyledHomeLink } from "./StyledComponents.tsx/Link";
 import { StyledParagraph } from "./StyledComponents.tsx/Paragraphs";
 import {
   AnimalFedWrapper,
+  InfoWrapper,
   SingleAnimalDescriptionWrapper,
   SingleAnimalImageWrapper,
   SingleAnimalWrapper,
@@ -82,7 +83,7 @@ export const Animal = () => {
           <StyledHeading>
             {animal.name} ({animal.latinName}){" "}
             <p>
-              {TimeService(animal, 4) ? (
+              {TimeService(animal, 3) ? (
                 <StyledAnchor href="#feed-animal">
                   Detta djur behöver matas!
                 </StyledAnchor>
@@ -98,8 +99,21 @@ export const Animal = () => {
               }}
             />
           </SingleAnimalImageWrapper>
+          <InfoWrapper>
+            <p>
+              <b>Född: </b>
+              {animal.yearOfBirth}
+            </p>
+            <p>
+              <b>Mediciner: </b>
+              {animal.medicine}
+            </p>
+          </InfoWrapper>
           <SingleAnimalDescriptionWrapper>
-            Decription: {animal.longDescription}
+            <span>
+              <b>Beskrivning: </b>
+              {animal.longDescription}
+            </span>
           </SingleAnimalDescriptionWrapper>
           <AnimalFedWrapper id="feed-animal">
             {animal.isFed ? null : (

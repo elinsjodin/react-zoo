@@ -1,10 +1,12 @@
 import { useContext, useEffect } from "react";
-import { Link } from "react-router-dom";
 import fallbackImg from "../assets/fallbackImg.png";
 import { AnimalListContext } from "../contexts/AnimalListContext";
 import { IAnimal } from "../models/IAnimal";
 import { TimeService } from "../models/TimeService";
-import { StyledHeading } from "./StyledComponents.tsx/Headings";
+import {
+  StyledHeading,
+  StyledTitleHeading,
+} from "./StyledComponents.tsx/Headings";
 import { StyledImage } from "./StyledComponents.tsx/Images";
 import { StyledLink } from "./StyledComponents.tsx/Link";
 import {
@@ -15,6 +17,7 @@ import {
   AnimalWrapper,
   HeroWrapper,
   ImageWrapper,
+  MainWrapper,
 } from "./StyledComponents.tsx/Wrappers";
 
 export const ShowAnimals = () => {
@@ -68,34 +71,37 @@ export const ShowAnimals = () => {
 
   return (
     <HeroWrapper>
-      {animalList.animals.map((animal) => {
-        return (
-          <AnimalWrapper key={animal.id}>
-            <StyledLink to={"/animal/" + animal.id}>
-              <StyledHeading>
-                {animal.name}{" "}
-                {TimeService(animal, 4) ? (
-                  <StyledAlertParagraph>
-                    (Detta djur behöver matas!)
-                  </StyledAlertParagraph>
-                ) : null}
-              </StyledHeading>
-              <ImageWrapper>
-                <StyledImage
-                  src={animal.imageUrl}
-                  alt={animal.name}
-                  onError={(e) => {
-                    e.currentTarget.src = fallbackImg;
-                  }}
-                ></StyledImage>
-              </ImageWrapper>
-            </StyledLink>
-            <StyledDescriptionParagraph>
-              {animal.shortDescription}
-            </StyledDescriptionParagraph>
-          </AnimalWrapper>
-        );
-      })}
+      <StyledTitleHeading>Välkommen till Djurens Zoo</StyledTitleHeading>
+      <MainWrapper>
+        {animalList.animals.map((animal) => {
+          return (
+            <AnimalWrapper key={animal.id}>
+              <StyledLink to={"/animal/" + animal.id}>
+                <StyledHeading>
+                  {animal.name}{" "}
+                  {TimeService(animal, 4) ? (
+                    <StyledAlertParagraph>
+                      (Detta djur behöver matas!)
+                    </StyledAlertParagraph>
+                  ) : null}
+                </StyledHeading>
+                <ImageWrapper>
+                  <StyledImage
+                    src={animal.imageUrl}
+                    alt={animal.name}
+                    onError={(e) => {
+                      e.currentTarget.src = fallbackImg;
+                    }}
+                  ></StyledImage>
+                </ImageWrapper>
+              </StyledLink>
+              <StyledDescriptionParagraph>
+                {animal.shortDescription}
+              </StyledDescriptionParagraph>
+            </AnimalWrapper>
+          );
+        })}
+      </MainWrapper>
     </HeroWrapper>
   );
 };
